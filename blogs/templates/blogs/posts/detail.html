@@ -1,0 +1,85 @@
+{% extends 'blogs/_base.html' %}
+{% load blogs_tags %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% block title %}Post Details{% endblock title %}
+{% block content %}
+    <div  class="card">
+      <div class="card-header">
+          <h4>{{ post.title }}</h4>
+          <small>Published {{ post.publish }} by {{ post.author }}</small>
+      </div>
+      <div class="card-body">
+        <h6 class="card-title">{{ post.body|markdown }}</h6>
+      </div>
+        <div class="card-header btn-group "  role="group" aria-label="Basic example">
+            <a class="btn btn-secondary" href="{% url "blogs:post_share" post.id %}"><i class="fas fa-share"></i></a>
+            <a class="btn btn-secondary" href="{% url "blogs:update" post.id %}"><i class="fas fa-edit"></i></a>
+             <a class="btn btn-secondary" href="{% url "blogs:delete" post.id %}"><i class="fas fa-trash"></i></a>
+        </div>
+        <div class="card-body">
+            <h2>Similar posts</h2>
+        </div>
+        <div class="card-header">
+            <p> {% for sim_post in similar_posts %}
+              <a href="{{ sim_post.get_absolute_url }}">{{ sim_post.title }}</a>
+            </p>
+          {% empty %}
+            There are no similar posts yet.
+          {% endfor %}
+        </div>
+    </div>
+
+
+
+    {% with comments.count as total_comments %}
+         <h2>
+            {{ total_comments }} comment{{ total_comments|pluralize }}
+         </h2>
+    {% endwith %}
+    <table class="table table-bordered table-striped">
+    <tbody>
+    {% for comment in comments %}
+        <tr>
+            <td>
+                <div class="card">
+                  <div class="card-header">
+                    Comment {{ forloop.counter }} by {{ comment.name }}
+                  </div>
+                  <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                      <p>{{ comment.body|linebreaks }}</p>
+                      <footer class="blockquote-footer">at <cite title="Source Title">{{ comment.created }}</cite></footer>
+                    </blockquote>
+                  </div>
+                </div>
+            </td>
+        </tr>
+
+    {% empty %}
+        <p>There are no comments yet.</p>
+    {% endfor %}
+    </tbody>
+    </table>
+
+    {% if new_comment %}
+        <h2>Your comment has been added.</h2>
+    {% else %}
+        <div class="col-sm-7">
+        <h2>Add a new comment</h2>
+            {% if user.is_authenticated %}
+                <form method="post">
+                     {{ comment_form|crispy }}
+                     {% csrf_token %}
+
+                         <input class="btn btn-outline-primary" type="submit" value="Add comment">
+                </form>
+             {% endif %}
+            {% if not user.is_authenticated %}
+                <form method="get">
+                    <a type="button" href="{% url 'login' %}{{ '?next=' }}{{ post.get_absolute_url }}" class="btn btn-lg btn-primary">Login to Comment</a>
+                </form>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

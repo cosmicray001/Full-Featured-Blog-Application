@@ -1,0 +1,21 @@
+{% extends "blogs/_base.html" %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% block title %}Share a post{% endblock %}
+{% block content %}
+ {% if sent %}
+     <div class="alert alert-info mt-2" role="alert">
+        <h6>E-mail successfully sent</h6>
+        <p>"{{ post.title }}" was successfully sent to {{ form.cleaned_data.to }}.</p>
+     </div>
+ {% else %}
+    <div class="alert alert-info mt-2" role="alert">
+     <h6>Share "{{ post.title }}" by e-mail</h6>
+    </div>
+ <form method="post"> {% csrf_token %}
+ {{ form|crispy }}
+ <input class="btn btn-outline-primary" type="submit" value="Send e-mail">
+ <a class="btn btn-outline-primary" href="{{ post.get_absolute_url }}">Back</a>
+ </form>
+ {% endif %}
+{% endblock %}

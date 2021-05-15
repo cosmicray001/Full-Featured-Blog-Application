@@ -1,0 +1,14 @@
+{% extends 'blogs/_base.html' %}
+{% block content %}
+    <div class="content mt-3 border">
+        <legend class="border-bottom p-3">Logout</legend>
+        <div class="alert alert-success" role="alert">
+          You have been logged out.
+        </div>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                <a type="button" class="btn btn-outline-info p-3" href="{% url 'login'%}">Sign in Again</a>
+            </small>
+        </div>
+    </div>
+{% endblock content %}
