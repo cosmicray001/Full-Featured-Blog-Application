@@ -92,6 +92,8 @@ def post_detail(request, year, month, day, post, *args, **kwargs):
         if comment_form.is_valid() and request.user.is_authenticated:
             new_comment = comment_form.save(commit=False)
             new_comment.post = post
+            new_comment.name = request.user
+            new_comment.email = request.user.email
             new_comment.save()
     else:
         comment_form = CommentForm()

@@ -15,7 +15,7 @@ import django_heroku
 from decouple import config
 from pathlib import Path
 
-DEBUG = False
+DEBUG = True
 if DEBUG:
     from .local_settings import (SECRET_KEY,
                                  EMAIL_HOST,
