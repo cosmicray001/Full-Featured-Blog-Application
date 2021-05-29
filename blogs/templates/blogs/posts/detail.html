@@ -30,7 +30,26 @@
         </div>
     </div>
 
+    {% if new_comment %}
+        <h2>Your comment has been added.</h2>
+    {% else %}
+        <div class="col-sm-7">
+        <h2>Add a new comment</h2>
+            {% if user.is_authenticated %}
+                <form method="post">
+                     {{ comment_form|crispy }}
+                     {% csrf_token %}
 
+                         <input class="btn btn-outline-primary" type="submit" value="Add comment">
+                </form>
+             {% endif %}
+            {% if not user.is_authenticated %}
+                <form method="get">
+                    <a type="button" href="{% url 'login' %}{{ '?next=' }}{{ post.get_absolute_url }}" class="btn btn-lg btn-primary">Login to Comment</a>
+                </form>
+            {% endif %}
+        </div>
+    {% endif %}
 
     {% with comments.count as total_comments %}
          <h2>
@@ -61,25 +80,4 @@
     {% endfor %}
     </tbody>
     </table>
-
-    {% if new_comment %}
-        <h2>Your comment has been added.</h2>
-    {% else %}
-        <div class="col-sm-7">
-        <h2>Add a new comment</h2>
-            {% if user.is_authenticated %}
-                <form method="post">
-                     {{ comment_form|crispy }}
-                     {% csrf_token %}
-
-                         <input class="btn btn-outline-primary" type="submit" value="Add comment">
-                </form>
-             {% endif %}
-            {% if not user.is_authenticated %}
-                <form method="get">
-                    <a type="button" href="{% url 'login' %}{{ '?next=' }}{{ post.get_absolute_url }}" class="btn btn-lg btn-primary">Login to Comment</a>
-                </form>
-            {% endif %}
-        </div>
-    {% endif %}
 {% endblock %}
