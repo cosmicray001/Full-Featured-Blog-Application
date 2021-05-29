@@ -12,10 +12,14 @@
       <div class="card-body">
         <h6 class="card-title">{{ post.body|markdown }}</h6>
       </div>
-        <div class="card-header btn-group "  role="group" aria-label="Basic example">
-            <a class="btn btn-secondary" href="{% url "blogs:post_share" post.id %}"><i class="fas fa-share"></i></a>
-            <a class="btn btn-secondary" href="{% url "blogs:update" post.id %}"><i class="fas fa-edit"></i></a>
-             <a class="btn btn-secondary" href="{% url "blogs:delete" post.id %}"><i class="fas fa-trash"></i></a>
+        <div class="card-header">
+        <div class="row"  role="group" aria-label="Basic example">
+            <div class="col-sm-4 text-center"><a class="btn btn-secondary" href="{% url "blogs:post_share" post.id %}">Share Post</a></div>
+            {% if post.author == user %}
+                <div class="col-sm-4 text-center"><a class="btn btn-secondary" href="{% url "blogs:update" post.id %}">Edit Post</a></div>
+            <div class="col-sm-4 text-center"><a class="btn btn-secondary" href="{% url "blogs:delete" post.id %}">Delete Post</a></div>
+            {% endif %}
+        </div>
         </div>
         <div class="card-body">
             <h2>Similar posts</h2>
