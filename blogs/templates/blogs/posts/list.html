@@ -16,7 +16,7 @@
           <small>Published {{ post.publish }} by {{ post.author }}</small>
       </div>
       <div class="card-body">
-        <h6 class="card-title">{{ post.body|markdown|truncatewords_html:30 }}</h6>
+        <h6 class="card-title">{{ post.body|safe|markdown|truncatewords_html:30}}</h6>
           Tags:
           {% for tag in post.tags.all %}
          <a class="btn btn-outline-primary" href="{% url "blogs:post_list_by_tag" tag.slug %}">
