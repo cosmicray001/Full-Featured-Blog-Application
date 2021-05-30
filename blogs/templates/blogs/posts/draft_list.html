@@ -1,0 +1,31 @@
+{% extends "blogs/_base.html" %}
+{% load blogs_tags %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{#  <h1>My Blog {{ page }}</h1>#}
+{#    {% if not posts %}#}
+{#        <div class="alert alert-info mt-2" role="alert">#}
+{#          Posts tagged with "{{ tag.name }}"#}
+{#        </div>#}
+{#    {% endif %}#}
+  {% for post in posts %}
+    <div  class="card">
+      <div class="card-header">
+          <h4><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h4>
+          <small>Last Edited {{ post.updated }}</small>
+      </div>
+      <div class="card-body">
+        <h6 class="card-title">{{ post.body|markdown|truncatewords_html:30 }}</h6>
+          Tags:
+          {% for tag in post.tags.all %}
+         <a class="btn btn-outline-primary disabled" href="{% url "blogs:post_list_by_tag" tag.slug %}">
+         {{ tag.name }}
+         </a>
+         {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
+
+  {% include "blogs/pagination.html" with page=posts %}
+{% endblock %}

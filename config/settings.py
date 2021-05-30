@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'crispy_forms',
     'whitenoise.runserver_nostatic',
+    'ckeditor',
 
 ]
 
@@ -144,7 +145,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Dhaka'
 
 USE_I18N = True
 
@@ -172,3 +173,33 @@ ACCOUNT_EMAIL_REQUIRED = True
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 django_heroku.settings(locals())
+
+CKEDITOR_CONFIGS = {
+    # django-ckeditor defaults
+    'default': {
+        # Editor Width Adaptation
+        'width': 'auto',
+        'height': '250px',
+        # tab key conversion space number
+        'tabSpaces': 4,
+        # Toolbar Style
+        'toolbar': 'Custom',
+        # Toolbar buttons
+        'toolbar_Custom': [
+            # Emotional Code Block
+            ['Smiley', 'CodeSnippet'],
+            # Font Style
+            ['Bold', 'Italic', 'Underline', 'RemoveFormat', 'Blockquote'],
+            # Font color
+            ['TextColor', 'BGColor'],
+            # Link link
+            ['Link', 'Unlink'],
+            # List of items
+            ['NumberedList', 'BulletedList'],
+            # Maximization
+            ['Maximize']
+        ],
+        # Add Code Block Plug-ins
+        'extraPlugins': ','.join(['codesnippet']),
+    }
+}
