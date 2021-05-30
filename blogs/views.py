@@ -12,7 +12,7 @@ from .forms import EmailPostForm, CommentForm, SearchForm
 
 
 def post_list(request, tag_slug=None):
-    object_list = Post.objects.all()
+    object_list = Post.objects.filter(status='published')
     tag = None
 
     if tag_slug:
@@ -80,7 +80,7 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 def post_detail(request, year, month, day, post, *args, **kwargs):
     post = get_object_or_404(Post, slug=post,
-                             status='published',
+                             # status='published',
                              publish__year=year,
                              publish__month=month,
                              publish__day=day,
@@ -143,3 +143,29 @@ def post_search(request):
                                                        "query": query,
                                                        "results": results
                                                        })
+
+
+def draft_post_list(request, tag_slug=None):
+    object_list = Post.objects.filter(status='draft', author=request.user)
+    tag = None
+
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        object_list = object_list.filter(tags__in=[tag])
+
+    paginator = Paginator(object_list, 3)  # 3 posts in each page
+    page = request.GET.get('page')
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer deliver the first page
+        posts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range deliver last page of results
+        posts = paginator.page(paginator.num_pages)
+    return render(request,
+                  'blogs/posts/draft_list.html',
+                  {'page': page,
+                   'posts': posts,
+                   'tag': tag,
+                   })

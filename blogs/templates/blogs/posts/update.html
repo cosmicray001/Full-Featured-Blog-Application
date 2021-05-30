@@ -4,6 +4,7 @@
 {% block title %} Create Post{% endblock title %}
 {% block content %}
     <form method="post"> {% csrf_token %}
+        {{ form.media }}
         {{ form|crispy }}
         <button type="submit" class="btn btn-outline-primary">Save</button>
         <a class="btn btn-outline-primary" href="{{ object.get_absolute_url }}">Back</a>

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import post_list, post_detail, post_share, post_search
+from .views import post_list, post_detail, post_share, post_search, draft_post_list
 from .views import PostListView, PostCreateView, PostUpdateView, PostDeleteView
 from django.contrib.sitemaps.views import sitemap
 from .sitemaps import PostSitemap
@@ -16,6 +16,7 @@ app_name = 'blogs'
 
 urlpatterns = [
     path('', post_list, name="post_list"),
+    path('draft/', draft_post_list, name="draft_post_list"),
     # path('', PostListView.as_view(), name="post_list"),
     path('tag/<slug:tag_slug>/', post_list, name='post_list_by_tag'),
     path('<int:year>/<int:month>/<int:day>/<slug:post>/', post_detail, name="post_detail"),
